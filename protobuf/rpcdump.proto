@@ -4,7 +4,7 @@ package rpcdump;
 
 option go_package = "github.com/hyperledger/burrow/rpc/rpcdump";
 
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 
 import "dump.proto";
 

@@ -25,6 +25,12 @@ HELM_PATH?=helm/package
 HELM_PACKAGE=$(HELM_PATH)/burrow-$(VERSION).tgz
 ARCH?=linux-amd64
 
+# To access Tendermint bundled protobuf files from go module cache
+TENDERMINT_MOD=github.com/tendermint/tendermint
+TENDERMINT_VERSION=$(shell go list -m -f '{{ .Version }}' $(TENDERMINT_MOD))
+TENDERMINT_SRC=$(shell go env GOMODCACHE)/$(TENDERMINT_MOD)@$(TENDERMINT_VERSION)
+TENDERMINT_PROTO=$(TENDERMINT_SRC)/proto
+
 export GO111MODULE=on
 
 ### Formatting, linting and vetting
@@ -88,11 +94,11 @@ protobuf: $(PROTO_GO_FILES) $(PROTO_TS_FILES) fix
 # Implicit compile rule for GRPC/proto files (note since pb.go files no longer generated
 # in same directory as proto file this just regenerates everything
 %.pb.go: %.proto
-	protoc -I ./protobuf $< --gogo_out=plugins=grpc:${GOPATH}/src
+	protoc -I ./protobuf -I $(TENDERMINT_PROTO) $< --gogo_out=plugins=grpc:${GOPATH}/src
 
 # Using this: https://github.com/agreatfool/grpc_tools_node_protoc_ts
 %.pb.ts: %.proto
-	$(NODE_BIN)/grpc_tools_node_protoc -I protobuf \
+	$(NODE_BIN)/grpc_tools_node_protoc -I protobuf -I $(TENDERMINT_PROTO) \
 		--plugin="protoc-gen-ts=$(NODE_BIN)/protoc-gen-ts" \
 		--js_out="import_style=commonjs,binary:${PROTO_GEN_TS_PATH}" \
 		--ts_out="generate_package_definition:${PROTO_GEN_TS_PATH}" \

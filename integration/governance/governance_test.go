@@ -24,7 +24,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	tmcore "github.com/tendermint/tendermint/rpc/core"
-	rpctypes "github.com/tendermint/tendermint/rpc/lib/types"
+	"github.com/tendermint/tendermint/rpc/jsonrpc/types"
 )
 
 func TestGovernance(t *testing.T) {
@@ -90,8 +90,11 @@ func TestGovernance(t *testing.T) {
 			err = rpctest.WaitNBlocks(ecli, 6)
 			require.NoError(t, err)
 			height := int64(genesisKernels[0].Blockchain.LastBlockHeight())
-			genesisKernels[0].Node.ConfigureRPC()
-			tmVals, err := tmcore.Validators(&rpctypes.Context{}, &height, 0, 0)
+			err = genesisKernels[0].Node.ConfigureRPC()
+			require.NoError(t, err)
+			pagePtr := 0
+			perPagePtr := 0
+			tmVals, err := tmcore.Validators(&types.Context{}, &height, &pagePtr, &perPagePtr)
 			require.NoError(t, err)
 			vsOut = validator.NewTrimSet()
 

@@ -4,7 +4,7 @@ package rpctransact;
 
 option go_package = "github.com/hyperledger/burrow/rpc/rpctransact";
 
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 import "google/protobuf/duration.proto";
 
 import "exec.proto";

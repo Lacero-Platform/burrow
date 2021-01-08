@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"fmt"
 
-	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/burrow/encoding"
 )
 
@@ -32,27 +31,8 @@ func (tx *ProposalTx) Any() *Any {
 	}
 }
 
-func DecodeProposal(proposalBytes []byte) (*Proposal, error) {
-	buf := proto.NewBuffer(proposalBytes)
-	proposal := new(Proposal)
-	err := buf.Unmarshal(proposal)
-	if err != nil {
-		return nil, err
-	}
-	return proposal, nil
-}
-
-func (p *Proposal) Encode() ([]byte, error) {
-	buf := proto.NewBuffer(nil)
-	err := buf.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
 func (p *Proposal) Hash() []byte {
-	bs, err := p.Encode()
+	bs, err := encoding.Encode(p)
 	if err != nil {
 		panic("failed to encode Proposal")
 	}

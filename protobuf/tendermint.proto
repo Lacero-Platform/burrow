@@ -3,7 +3,7 @@ syntax = 'proto3';
 
 option go_package = "github.com/hyperledger/burrow/consensus/tendermint";
 
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 
 package tendermint;
 

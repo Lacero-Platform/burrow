@@ -4,7 +4,7 @@ package permission;
 
 option go_package = "github.com/hyperledger/burrow/permission";
 
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 
 // Enable custom Marshal method.
 option (gogoproto.marshaler_all) = true;

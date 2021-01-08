@@ -2,7 +2,7 @@ syntax = 'proto3';
 
 option go_package = "github.com/hyperledger/burrow/txs/payload";
 
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "gogoproto/gogo.proto";
 
 import "permission.proto";
 import "registry.proto";
@@ -154,7 +154,7 @@ message ProposalTx {
 message IdentifyTx {
     option (gogoproto.goproto_stringer) = false;
     option (gogoproto.goproto_getters) = false;
-    
+
     // Senders
     repeated TxInput Inputs = 1;
 	// Node to register
